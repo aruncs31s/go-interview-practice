@@ -50,7 +50,8 @@ jobs:
           echo "$CHANGED_FILES"
           
           # Check if any files outside of submissions directories are modified
-          NON_SUBMISSION_FILES=$(echo "$CHANGED_FILES" | grep -v -E "challenge-[0-9]+/submissions/" || true)
+          # Allow both regular challenge submissions and package challenge submissions
+          NON_SUBMISSION_FILES=$(echo "$CHANGED_FILES" | grep -v -E "(challenge-[0-9]+/submissions/|packages/[^/]+/challenge-[^/]+/submissions/)" || true)
           
           # Check for manual approval in PR labels or comments
           MANUAL_APPROVAL_GRANTED="false"
@@ -72,10 +73,16 @@ jobs:
           fi
           
           # Extract challenges that were modified (either submissions or other files)
-          CHANGED_CHALLENGES=$(echo "$CHANGED_FILES" | grep -E "^challenge-[0-9]+/" | sed 's|/.*||' | sort -u || true)
+          # Include both regular challenges and package challenges
+          REGULAR_CHALLENGES=$(echo "$CHANGED_FILES" | grep -E "^challenge-[0-9]+/" | sed 's|/.*||' || true)
+          PACKAGE_CHALLENGES=$(echo "$CHANGED_FILES" | grep -E "^packages/[^/]+/challenge-[^/]+/" | sed -E 's|^(packages/[^/]+/challenge-[^/]+)/.*|\1|' || true)
+          CHANGED_CHALLENGES=$(echo -e "$REGULAR_CHALLENGES\n$PACKAGE_CHALLENGES" | grep -v '^$' | sort -u || true)
           
           # Extract submission directories that were modified  
-          MODIFIED_SUBMISSION_DIRS=$(echo "$CHANGED_FILES" | grep -E "challenge-[0-9]+/submissions/" | cut -d'/' -f3 | sort -u || true)
+          # Include both regular challenge submissions and package challenge submissions
+          REGULAR_SUBMISSION_DIRS=$(echo "$CHANGED_FILES" | grep -E "challenge-[0-9]+/submissions/" | cut -d'/' -f3 || true)
+          PACKAGE_SUBMISSION_DIRS=$(echo "$CHANGED_FILES" | grep -E "packages/[^/]+/challenge-[^/]+/submissions/" | cut -d'/' -f5 || true)
+          MODIFIED_SUBMISSION_DIRS=$(echo -e "$REGULAR_SUBMISSION_DIRS\n$PACKAGE_SUBMISSION_DIRS" | grep -v '^$' | sort -u || true)
           
           if [ -n "$CHANGED_CHALLENGES" ]; then
             echo "Changed challenges: $CHANGED_CHALLENGES"
@@ -124,7 +131,16 @@ jobs:
           USERNAME_LOWER=$(echo "$USERNAME" | tr '[:upper:]' '[:lower:]')
           INVALID_FILES=""
           for FILE in $CHANGED_FILES; do
+            # Check regular challenge submissions
             if [[ "$FILE" =~ ^challenge-[0-9]+/submissions/([^/]+)/ ]]; then
+              SUBMISSION_USER="${BASH_REMATCH[1]}"
+              SUBMISSION_USER_LOWER=$(echo "$SUBMISSION_USER" | tr '[:upper:]' '[:lower:]')
+              if [ "$SUBMISSION_USER_LOWER" != "$USERNAME_LOWER" ]; then
+                INVALID_FILES="$INVALID_FILES $FILE"
+              fi
+            fi
+            # Check package challenge submissions
+            if [[ "$FILE" =~ ^packages/[^/]+/challenge-[^/]+/submissions/([^/]+)/ ]]; then
               SUBMISSION_USER="${BASH_REMATCH[1]}"
               SUBMISSION_USER_LOWER=$(echo "$SUBMISSION_USER" | tr '[:upper:]' '[:lower:]')
               if [ "$SUBMISSION_USER_LOWER" != "$USERNAME_LOWER" ]; then
@@ -134,18 +150,30 @@ jobs:
           done
           
           # Check for strict security violations (modifying other users' submissions)
+          # Skip this check if manual approval is granted
           if [ -n "$INVALID_DIRS" ] || [ -n "$INVALID_FILES" ]; then
-            if [ -n "$INVALID_DIRS" ]; then
-              echo "❌ STRICT SECURITY VIOLATION: User '$USERNAME' attempted to modify submission directories for other users:$INVALID_DIRS"
+            if [ "$MANUAL_APPROVAL_GRANTED" == "true" ]; then
+              echo "✅ Manual approval granted - bypassing submission directory security checks"
+              echo "⚠️  WARNING: User '$USERNAME' modified submission directories for other users:$INVALID_DIRS"
+              if [ -n "$INVALID_FILES" ]; then
+                echo "⚠️  WARNING: User '$USERNAME' modified files in other users' submission directories:"
+                echo "$INVALID_FILES"
+              fi
+              echo "🔓 Manual approval allows bypassing normal security restrictions"
+            else
+              if [ -n "$INVALID_DIRS" ]; then
+                echo "❌ STRICT SECURITY VIOLATION: User '$USERNAME' attempted to modify submission directories for other users:$INVALID_DIRS"
+              fi
+              if [ -n "$INVALID_FILES" ]; then
+                echo "❌ STRICT SECURITY VIOLATION: User '$USERNAME' attempted to modify files in other users' submission directories:"
+                echo "$INVALID_FILES"
+              fi
+              echo "✅ You can only modify submissions in directories named after your GitHub username: $USERNAME"
+              echo "✅ Allowed directories: challenge-*/submissions/$USERNAME or packages/*/challenge-*/submissions/$USERNAME"
+              echo "validation_passed=false" >> $GITHUB_OUTPUT
+              echo "validation_needed=true" >> $GITHUB_OUTPUT
+              exit 1
             fi
-            if [ -n "$INVALID_FILES" ]; then
-              echo "❌ STRICT SECURITY VIOLATION: User '$USERNAME' attempted to modify files in other users' submission directories:"
-              echo "$INVALID_FILES"
-            fi
-            echo "✅ You can only modify submissions in directories named after your GitHub username: $USERNAME"
-            echo "validation_passed=false" >> $GITHUB_OUTPUT
-            echo "validation_needed=true" >> $GITHUB_OUTPUT
-            exit 1
           fi
           
           # Check if manual approval is needed and not granted
@@ -154,7 +182,12 @@ jobs:
             echo "validation_passed=false" >> $GITHUB_OUTPUT
             echo "validation_needed=true" >> $GITHUB_OUTPUT
           else
-            echo "✅ Security validation passed"
+            if [ "$MANUAL_APPROVAL_GRANTED" == "true" ]; then
+              echo "✅ Manual approval granted - security validation bypassed"
+              echo "🔓 All security checks bypassed due to manual approval"
+            else
+              echo "✅ Security validation passed"
+            fi
             echo "validation_passed=true" >> $GITHUB_OUTPUT
             echo "validation_needed=false" >> $GITHUB_OUTPUT
           fi
@@ -170,7 +203,7 @@ jobs:
           echo "🚨 MANUAL APPROVAL REQUIRED 🚨"
           echo ""
           echo "🔍 This PR modifies files outside of submission directories"
-          echo "📝 Files modified outside challenge-*/submissions/ need admin review"
+          echo "📝 Files modified outside challenge-*/submissions/ or packages/*/challenge-*/submissions/ need admin review"
           echo ""
           echo "📢 @RezaSi - Please review and approve this PR by:"
           echo "   1. ✅ Reviewing the changes carefully"
@@ -210,24 +243,75 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.21'
+          go-version: '1.25.0'
 
       - name: Run Tests for ${{ matrix.challenge }}
         working-directory: ${{ matrix.challenge }}
         run: |
           USERNAME="${{ github.event.pull_request.user.login }}"
-          SUBMISSION_DIR="submissions/$USERNAME"
-          if [ -d "$SUBMISSION_DIR" ]; then
-            echo "Testing submission from $USERNAME"
-            cp "$SUBMISSION_DIR"/*.go .
-            
-            # Handle dependencies if go.mod exists
-            if [ -f "go.mod" ]; then
-              echo "Found go.mod file, downloading dependencies..."
-              go mod tidy
+          
+          # Check if this is a package challenge or regular challenge
+          if [[ "${{ matrix.challenge }}" =~ ^packages/ ]]; then
+            # Package challenge
+            SUBMISSION_DIR="submissions/$USERNAME"
+            if [ -d "$SUBMISSION_DIR" ]; then
+              echo "Testing package challenge submission from $USERNAME"
+              
+              # Create a temporary directory for testing
+              TEMP_DIR=$(mktemp -d)
+              
+              # Copy the user's solution file and test file to temp directory
+              cp "$SUBMISSION_DIR/solution.go" "$TEMP_DIR/"
+              cp "solution-template_test.go" "$TEMP_DIR/"
+              
+              # Copy go.mod if it exists
+              if [ -f "go.mod" ]; then
+                cp "go.mod" "$TEMP_DIR/"
+              fi
+              
+              # Rename solution.go to solution-template.go for the test
+              mv "$TEMP_DIR/solution.go" "$TEMP_DIR/solution-template.go"
+              
+              # Navigate to temp directory
+              pushd "$TEMP_DIR" > /dev/null
+              
+                              # Handle dependencies if go.mod exists
+              if [ -f "go.mod" ]; then
+                echo "Found go.mod file, downloading dependencies..."
+                # Update module name to avoid conflicts
+                sed -i 's/^module .*/module challenge/' go.mod
+                go mod tidy
+              else
+                go mod init challenge
+              fi
+              
+              # Run tests
+              go test -v
+              TEST_EXIT_CODE=$?
+              
+              # Return to original directory and cleanup
+              popd > /dev/null
+              rm -rf "$TEMP_DIR"
+              
+              exit $TEST_EXIT_CODE
+            else
+              echo "No submission found for $USERNAME in package challenge ${{ matrix.challenge }}"
             fi
-            
-            go test -v
           else
-            echo "No submission found for $USERNAME in ${{ matrix.challenge }}"
+            # Regular challenge
+            SUBMISSION_DIR="submissions/$USERNAME"
+            if [ -d "$SUBMISSION_DIR" ]; then
+              echo "Testing submission from $USERNAME"
+              cp "$SUBMISSION_DIR"/*.go .
+              
+              # Handle dependencies if go.mod exists
+              if [ -f "go.mod" ]; then
+                echo "Found go.mod file, downloading dependencies..."
+                go mod tidy
+              fi
+              
+              go test -v
+            else
+              echo "No submission found for $USERNAME in ${{ matrix.challenge }}"
+            fi
           fi
