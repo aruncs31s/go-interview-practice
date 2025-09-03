@@ -411,6 +411,8 @@
 {{define "scripts"}}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        checkAuthStatus();
+
         // Filters
         const filterButtons = document.querySelectorAll('[id^="filter-"]');
         const challengeItems = document.querySelectorAll('.challenge-item');

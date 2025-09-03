@@ -332,69 +332,6 @@
             font-size: 1.5rem;
         }
         
-        /* Dark/Light Mode Toggle */
-        .theme-toggle-btn {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-        
-        .theme-toggle-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.5);
-            transform: rotate(180deg);
-        }
-        
-        /* Dark Mode Styles */
-        [data-theme="dark"] {
-            --bg-color: #0d1117;
-            --bg-secondary: #161b22;
-            --text-color: #e6edf3;
-            --text-muted: #7d8590;
-            --border-color: #30363d;
-            --card-bg: rgba(22, 27, 34, 0.8);
-            --navbar-bg: rgba(13, 17, 23, 0.95);
-            --gradient-start: #1a1f29;
-            --gradient-end: #2d1b69;
-        }
-        
-        [data-theme="light"] {
-            --bg-color: #ffffff;
-            --bg-secondary: #f8f9fa;
-            --text-color: #24292f;
-            --text-muted: #656d76;
-            --border-color: #d0d7de;
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --navbar-bg: rgba(33, 37, 41, 0.95);
-            --gradient-start: #f8faff;
-            --gradient-end: #f0f4ff;
-        }
-        
-        /* Apply theme variables */
-        body {
-            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-            color: var(--text-color);
-            transition: all 0.3s ease;
-        }
-        
-        .navbar {
-            background: var(--navbar-bg) !important;
-        }
-        
-        .card {
-            background: var(--card-bg);
-            border-color: var(--border-color);
-        }
-        
-        .text-muted {
-            color: var(--text-muted) !important;
-        }
-        
         /* Form inputs */
         .form-control {
             border-radius: 50px;
@@ -801,7 +738,8 @@
                         <a class="nav-link" href="/scoreboard">Scoreboard</a>
                     </li>
                 </ul>
-                <div class="d-flex align-items-center">
+                <!-- New Change after login -->
+                 <div class="d-flex align-items-center">
                     <!-- Dark/Light Mode Toggle -->
                     <div class="theme-toggle me-3">
                         <button class="btn btn-outline-light btn-sm theme-toggle-btn" id="theme-toggle" title="Toggle dark/light mode">
@@ -814,7 +752,6 @@
                         <a href="/login" class="btn btn-outline-light btn-sm me-2">Login</a>
                         <a href="/signup" class="btn btn-primary btn-sm">Sign Up</a>
                     </div>
-                    
                     <div class="profile-container">
                         <div class="profile-display" id="profile-display" style="display: none;">
                             <div class="profile-avatar-container" data-bs-toggle="dropdown" aria-expanded="false">
@@ -919,7 +856,7 @@
                                 <li><a class="dropdown-item" href="#" id="change-username">
                                     <i class="bi bi-pencil me-2"></i>Change Username
                                 </a></li>
-                                <li><hr class="dropdown-divider"></li>
+                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="#" onclick="logout()">
                                     <i class="bi bi-box-arrow-right me-2"></i>Logout
                                 </a></li>
@@ -958,11 +895,34 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
     <script src="/static/js/main.js"></script>
     <script>
+        // Authentication status checker
+        function checkAuthStatus() {
+            const token = localStorage.getItem('auth_token');
+            const loginButton = document.getElementById('loginButton');
+            const logoutButton = document.getElementById('logoutButton');
+            const profileDropdown = document.getElementById('profile-display');
+            
+            if (token) {
+                // User is logged in
+                if (loginButton) loginButton.style.display = 'none';
+                if (logoutButton) logoutButton.style.display = 'block';
+                if (profileDropdown) profileDropdown.style.display = 'block';
+                
+                // Initialize profile data
+                if (typeof window.initializeProfile === 'function') {
+                    window.initializeProfile();
+                }
+            } else {
+                // User is not logged in
+                if (loginButton) loginButton.style.display = 'block';
+                if (logoutButton) logoutButton.style.display = 'none';
+                if (profileDropdown) profileDropdown.style.display = 'none';
+            }
+        }
+
         // Store username in localStorage and cookies
         document.addEventListener('DOMContentLoaded', function() {
             // Check authentication status
-            checkAuthStatus();
-            
             const usernameInput = document.getElementById('username');
             const helpIcon = document.getElementById('username-help-icon');
             const helpTooltip = document.getElementById('username-help-tooltip');
@@ -996,7 +956,7 @@
                             'cookie': 'Saved from previous session',
                             'localStorage': 'Saved locally',
                             'manual': 'Manually entered',
-                            'auth': '🔐 Authenticated account'
+                            'auth': 'Authenticated'
                         };
                         profileSourceText.textContent = sourceTexts[source] || 'GitHub username';
                         
@@ -1321,8 +1281,8 @@
                     });
                 }
                 
-                // Load username or check auth status
-                checkAuthStatus();
+                // Load username asynchronously
+                loadUsername();
                 
                 // Set up copy button for badge markdown
                 const copyBadgeBtn = document.getElementById('copy-badge-btn');
@@ -1440,16 +1400,61 @@
             document.querySelectorAll('pre code').forEach((el) => {
                 hljs.highlightElement(el);
             });
-
-            // Make profile functions globally accessible
-            window.loadUsername = loadUsername();
-            window.showProfile = showProfile;
-            window.showLoading = showLoading;
-            window.showInput = showInput;
             
+            // Make profile functions globally accessible
+            if (typeof showProfile !== 'undefined') window.showProfile = showProfile;
+            if (typeof showLoading !== 'undefined') window.showLoading = showLoading;
+            if (typeof showInput !== 'undefined') window.showInput = showInput;
+            if (typeof loadUsername !== 'undefined') window.loadUsername = loadUsername;
+
             // Make updateProfileStatistics globally available for other pages
             window.updateProfileStatistics = updateProfileStatistics;
         });
+
+        // Initialize profile function
+        function initializeProfile() {
+            if (typeof loadUsername === 'function') {
+                setTimeout(loadUsername, 100);
+            }
+        }
+
+        // Load username function
+        function loadUsername() {
+            const profileLoading = document.getElementById('profile-loading');
+            const profileAvatar = document.getElementById('profile-avatar');
+            const profileUsername = document.getElementById('profile-username');
+            const profileSourceText = document.getElementById('profile-source-text');
+            
+            if (profileLoading) profileLoading.style.display = 'block';
+            
+            fetch('/api/profile', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('auth_token')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (profileLoading) profileLoading.style.display = 'none';
+                
+                if (data.success && data.username) {
+                    if (profileUsername) profileUsername.textContent = data.username;
+                    if (profileAvatar) profileAvatar.src = `https://github.com/${data.username}.png`;
+                    if (profileSourceText) profileSourceText.textContent = 'GitHub Profile';
+                } else {
+                    console.error('Failed to load profile:', data.message);
+                }
+            })
+            .catch(error => {
+                if (profileLoading) profileLoading.style.display = 'none';
+                console.error('Error loading profile:', error);
+            });
+        }
+
+        // Make functions globally available
+        window.initializeProfile = initializeProfile;
+        window.loadUsername = loadUsername;
+        window.checkAuthStatus = checkAuthStatus;
 
         // Profile management functions (global scope)
         function initializeProfile() {
@@ -1466,7 +1471,7 @@
 
         // Authentication functions
         function checkAuthStatus() {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('auth_token');
             const authButtons = document.getElementById('auth-buttons');
             
             if (token) {
@@ -1485,37 +1490,32 @@
                 })
                 .then(user => {
                     // User is authenticated - hide auth buttons
-                    authButtons.style.display = 'none';
+                    if (authButtons) authButtons.style.display = 'none';
                     // Show user info in profile section
-                    if (user.username) {
-                        // Update source text for authenticated users
-                        const sourceTexts = {
-                            'remote-origin': 'Auto-detected from git remote',
-                            'git-config': 'Auto-detected from git config',
-                            'cookie': 'Saved from previous session',
-                            'localStorage': 'Saved locally',
-                            'manual': 'Manually entered',
-                            'auth': '🔐 Authenticated account'
-                        };
-                        showProfile(user.username, 'auth');
+                    if (user.username && typeof window.showProfile === 'function') {
+                        window.showProfile(user.username, 'auth');
                     }
                 })
                 .catch(error => {
                     // Token is invalid - remove it and show auth buttons
-                    localStorage.removeItem('token');
-                    authButtons.style.display = 'block';
+                    localStorage.removeItem('auth_token');
+                    if (authButtons) authButtons.style.display = 'block';
                     // Continue with normal profile detection if no auth
-                    window.initializeProfile();
+                    if (typeof window.initializeProfile === 'function') {
+                        window.initializeProfile();
+                    }
                 });
             } else {
                 // No token - show auth buttons and continue with normal profile detection
-                authButtons.style.display = 'block';
-                window.initializeProfile();
+                if (authButtons) authButtons.style.display = 'block';
+                if (typeof window.initializeProfile === 'function') {
+                    window.initializeProfile();
+                }
             }
         }
 
         function logout() {
-            localStorage.removeItem('token');
+            localStorage.removeItem('auth_token');
             window.location.href = '/';
         }
 
