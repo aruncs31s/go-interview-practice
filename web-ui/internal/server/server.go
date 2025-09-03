@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"web-ui/internal/handlers"
+	"web-ui/internal/middleware"
 	"web-ui/internal/services"
 )
 
@@ -23,6 +24,7 @@ type Server struct {
 	executionService  *services.ExecutionService
 	packageService    *services.PackageService
 	aiService         *services.AIService
+	authService       *services.AuthService
 }
 
 // NewServer creates a new server instance
@@ -34,6 +36,7 @@ func NewServer(
 	executionService *services.ExecutionService,
 	packageService *services.PackageService,
 	aiService *services.AIService,
+	authService *services.AuthService,
 ) *Server {
 	return &Server{
 		content:           content,
@@ -43,6 +46,7 @@ func NewServer(
 		executionService:  executionService,
 		packageService:    packageService,
 		aiService:         aiService,
+		authService:       authService,
 	}
 }
 
@@ -71,7 +75,21 @@ func (s *Server) SetupRoutes() *http.ServeMux {
 		s.packageService,
 	)
 
-	// API routes
+	// Initialize auth handler and middleware
+	authHandler := handlers.NewAuthHandler(s.authService)
+	authMiddleware := middleware.NewAuthMiddleware(s.authService)
+
+	// Auth routes (no authentication required)
+	mux.HandleFunc("/api/auth/signup", authHandler.SignUpHandler)
+	mux.HandleFunc("/api/auth/login", authHandler.LoginHandler)
+	mux.HandleFunc("/api/auth/me", authHandler.MeHandler) // Token validation endpoint - handles auth internally
+	mux.HandleFunc("/login", authHandler.LoginPageHandler)
+	mux.HandleFunc("/signup", authHandler.SignUpPageHandler)
+
+	// Auth routes (authentication required)
+	mux.Handle("/api/auth/refresh", authMiddleware.RequireAuth(http.HandlerFunc(authHandler.MeHandler))) // This can be used to validate token
+
+	// Existing API routes (can be protected with middleware if needed)
 	mux.HandleFunc("/api/challenges", apiHandler.GetAllChallenges)
 	mux.HandleFunc("/api/challenges/", apiHandler.GetChallengeByID)
 	mux.HandleFunc("/api/submissions", apiHandler.HandleSubmissions)

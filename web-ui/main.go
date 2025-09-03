@@ -11,6 +11,7 @@ import (
 
 	"web-ui/internal/server"
 	"web-ui/internal/services"
+	"web-ui/internal/storage"
 )
 
 //go:embed templates static
@@ -27,6 +28,13 @@ func main() {
 	executionService := services.NewExecutionService()
 	packageService := services.NewPackageService()
 	aiService := services.NewAIService()
+
+	// Initialize storage and auth service
+	userStorage := storage.NewJSONUserStorage("data/users.json")
+	if err := userStorage.Connect(); err != nil {
+		log.Fatalf("Failed to initialize user storage: %v", err)
+	}
+	authService := services.NewAuthService(userStorage)
 
 	// Load data
 	log.Println("Loading challenges...")
@@ -53,6 +61,7 @@ func main() {
 		executionService,
 		packageService,
 		aiService,
+		authService,
 	)
 
 	// Setup routes
