@@ -21,6 +21,14 @@
 
 Welcome to the **Go Interview Practice** repository! Master Go programming and ace your technical interviews with our interactive coding challenges.
 
+Our interactive platform is now live at **[gointerview.dev](https://gointerview.dev/)** 🎉 Explore challenges, track your progress, and elevate your Go skills with AI-powered mentorship.
+
+<div align="center">
+  <a href="https://gointerview.dev/" target="_blank">
+    <img src="https://img.shields.io/badge/Start%20Practicing-Now-blue?style=for-the-badge&logo=go" alt="Start Practicing Now">
+  </a>
+</div>
+
 ---
 
 ## Visual Overview
@@ -78,16 +86,16 @@ Our most accomplished Go developers, ranked by number of challenges completed:
 
 | 🏅 | Developer | Solved | Rate | Achievement | Progress |
 |:---:|:---:|:---:|:---:|:---:|:---|
-| 🥇 | <img src="https://github.com/odelbos.png" width="24" height="24" style="border-radius: 50%;"><br/>**[odelbos](https://github.com/odelbos)** | **30**/30 | **100.0%** | Master | ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅<br/>✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ |
-| 🥈 | <img src="https://github.com/PolinaSvet.png" width="24" height="24" style="border-radius: 50%;"><br/>**[PolinaSvet](https://github.com/PolinaSvet)** | **25**/30 | **83.3%** | Master | ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅<br/>✅✅✅✅✅✅✅✅⬜⬜⬜✅⬜⬜✅ |
+| 🥇 | <img src="https://github.com/PolinaSvet.png" width="24" height="24" style="border-radius: 50%;"><br/>**[PolinaSvet](https://github.com/PolinaSvet)** | **30**/30 | **100.0%** | Master | ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅<br/>✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ |
+| 🥈 | <img src="https://github.com/odelbos.png" width="24" height="24" style="border-radius: 50%;"><br/>**[odelbos](https://github.com/odelbos)** | **30**/30 | **100.0%** | Master | ✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅<br/>✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ |
 | 🥉 | <img src="https://github.com/mick4711.png" width="24" height="24" style="border-radius: 50%;"><br/>**[mick4711](https://github.com/mick4711)** | **23**/30 | **76.7%** | Master | ✅✅✅✅✅✅✅✅✅✅⬜⬜✅✅⬜<br/>✅✅✅✅✅✅✅✅⬜⬜✅✅⬜⬜✅ |
-| 4 | <img src="https://github.com/y1hao.png" width="24" height="24" style="border-radius: 50%;"><br/>**[y1hao](https://github.com/y1hao)** | **21**/30 | **70.0%** | Master | ✅✅✅✅✅✅✅✅⬜✅⬜⬜✅✅⬜<br/>✅✅✅✅✅✅✅✅⬜⬜⬜✅⬜⬜✅ |
-| 5 | <img src="https://github.com/Gandook.png" width="24" height="24" style="border-radius: 50%;"><br/>**[Gandook](https://github.com/Gandook)** | **20**/30 | **66.7%** | Master | ✅✅✅✅⬜✅✅✅✅✅⬜⬜✅⬜⬜<br/>⬜✅✅✅⬜✅✅✅✅✅⬜✅⬜⬜✅ |
+| 4 | <img src="https://github.com/Gandook.png" width="24" height="24" style="border-radius: 50%;"><br/>**[Gandook](https://github.com/Gandook)** | **22**/30 | **73.3%** | Master | ✅✅✅✅✅✅✅✅✅✅⬜⬜✅⬜⬜<br/>⬜✅✅✅⬜✅✅✅✅✅✅✅⬜⬜✅ |
+| 5 | <img src="https://github.com/y1hao.png" width="24" height="24" style="border-radius: 50%;"><br/>**[y1hao](https://github.com/y1hao)** | **21**/30 | **70.0%** | Master | ✅✅✅✅✅✅✅✅⬜✅⬜⬜✅✅⬜<br/>✅✅✅✅✅✅✅✅⬜⬜⬜✅⬜⬜✅ |
 | 6 | <img src="https://github.com/JackDalberg.png" width="24" height="24" style="border-radius: 50%;"><br/>**[JackDalberg](https://github.com/JackDalberg)** | **20**/30 | **66.7%** | Master | ✅✅✅✅✅✅✅✅⬜✅⬜⬜✅✅⬜<br/>⬜✅✅✅✅✅✅✅⬜⬜⬜✅⬜⬜✅ |
-| 7 | <img src="https://github.com/ashwinipatankar.png" width="24" height="24" style="border-radius: 50%;"><br/>**[ashwinipatankar](https://github.com/ashwinipatankar)** ❤️ | **18**/30 | **60.0%** | Expert | ✅✅✅⬜✅✅✅⬜✅✅⬜⬜✅✅⬜<br/>⬜✅✅✅⬜✅✅✅⬜⬜⬜✅⬜⬜✅ |
-| 8 | <img src="https://github.com/KhaledMosaad.png" width="24" height="24" style="border-radius: 50%;"><br/>**[KhaledMosaad](https://github.com/KhaledMosaad)** | **14**/30 | **46.7%** | Advanced | ✅✅✅⬜⬜✅⬜⬜⬜⬜⬜⬜✅⬜⬜<br/>⬜✅✅✅⬜✅✅✅⬜⬜✅✅⬜⬜✅ |
-| 9 | <img src="https://github.com/RezaSi.png" width="24" height="24" style="border-radius: 50%;"><br/>**[RezaSi](https://github.com/RezaSi)** | **14**/30 | **46.7%** | Advanced | ✅✅✅✅✅✅⬜⬜⬜✅⬜⬜✅⬜⬜<br/>⬜✅✅✅⬜✅✅✅⬜⬜⬜⬜⬜⬜⬜ |
-| 10 | <img src="https://github.com/t4e1.png" width="24" height="24" style="border-radius: 50%;"><br/>**[t4e1](https://github.com/t4e1)** | **14**/30 | **46.7%** | Advanced | ✅✅✅✅✅✅✅⬜⬜✅⬜⬜✅⬜⬜<br/>⬜✅✅✅⬜✅✅⬜⬜⬜⬜⬜⬜⬜⬜ |
+| 7 | <img src="https://github.com/ashwinipatankar.png" width="24" height="24" style="border-radius: 50%;"><br/>**[ashwinipatankar](https://github.com/ashwinipatankar)** ❤️ | **17**/30 | **56.7%** | Expert | ✅✅✅⬜✅✅✅⬜✅✅⬜⬜✅✅⬜<br/>⬜✅✅✅⬜⬜✅✅⬜⬜⬜✅⬜⬜✅ |
+| 8 | <img src="https://github.com/Cpoing.png" width="24" height="24" style="border-radius: 50%;"><br/>**[Cpoing](https://github.com/Cpoing)** | **16**/30 | **53.3%** | Expert | ✅✅✅✅⬜✅✅✅✅✅✅✅✅✅✅<br/>⬜✅⬜⬜⬜✅⬜⬜⬜⬜⬜⬜⬜⬜⬜ |
+| 9 | <img src="https://github.com/t4e1.png" width="24" height="24" style="border-radius: 50%;"><br/>**[t4e1](https://github.com/t4e1)** | **15**/30 | **50.0%** | Expert | ✅✅✅✅✅✅✅⬜⬜✅⬜⬜✅⬜⬜<br/>⬜✅✅✅⬜✅✅⬜⬜⬜⬜✅⬜⬜⬜ |
+| 10 | <img src="https://github.com/KhaledMosaad.png" width="24" height="24" style="border-radius: 50%;"><br/>**[KhaledMosaad](https://github.com/KhaledMosaad)** | **14**/30 | **46.7%** | Advanced | ✅✅✅⬜⬜✅⬜⬜⬜⬜⬜⬜✅⬜⬜<br/>⬜✅✅✅⬜✅✅✅⬜⬜✅✅⬜⬜✅ |
 
 <div align="center">
 
@@ -102,8 +110,8 @@ Our most accomplished Go developers, ranked by number of challenges completed:
 ### Challenge Progress Overview
 
 - **Total Challenges Available**: 30
-- **Active Developers**: 112
-- **Most Challenges Solved**: 30 by odelbos
+- **Active Developers**: 130
+- **Most Challenges Solved**: 30 by PolinaSvet
 
 <!-- END_CLASSIC_LEADERBOARD -->
 ## 🚀 Package Challenges Leaderboard
@@ -115,10 +123,12 @@ Master Go packages through hands-on challenges! Each package offers a structured
 | 🏅 | Developer | Total Solved | Packages | Achievement | Challenge Distribution |
 |:---:|:---:|:---:|:---:|:---:|:---|
 | 🥇 | <img src="https://github.com/odelbos.png" width="24" height="24" style="border-radius: 50%;"><br/>**[odelbos](https://github.com/odelbos)** | **17** | **4** pkgs | 🔥 Package Master | **cobra**: 4 • **fiber**: 4 • **gin**: 4 • **gorm**: 5 |
-| 🥈 | <img src="https://github.com/RezaSi.png" width="24" height="24" style="border-radius: 50%;"><br/>**[RezaSi](https://github.com/RezaSi)** | **4** | **4** pkgs | 🚀 Package Intermediate | **cobra**: 1 • **fiber**: 1 • **gin**: 1 • **gorm**: 1 |
+| 🥈 | <img src="https://github.com/RezaSi.png" width="24" height="24" style="border-radius: 50%;"><br/>**[RezaSi](https://github.com/RezaSi)** | **5** | **5** pkgs | 💪 Package Advanced | **cobra**: 1 • **echo**: 1 • **fiber**: 1 • **gin**: 1 • **gorm**: 1 |
 | 🥉 | <img src="https://github.com/ashwinipatankar.png" width="24" height="24" style="border-radius: 50%;"><br/>**[ashwinipatankar](https://github.com/ashwinipatankar)** ❤️ | **3** | **1** pkg | 🚀 Package Intermediate | **cobra**: 3 |
 | 4 | <img src="https://github.com/GleeN987.png" width="24" height="24" style="border-radius: 50%;"><br/>**[GleeN987](https://github.com/GleeN987)** | **1** | **1** pkg | 🌱 Package Beginner | **gin**: 1 |
 | 5 | <img src="https://github.com/MarioPaez.png" width="24" height="24" style="border-radius: 50%;"><br/>**[MarioPaez](https://github.com/MarioPaez)** | **1** | **1** pkg | 🌱 Package Beginner | **gin**: 1 |
+| 6 | <img src="https://github.com/PolinaSvet.png" width="24" height="24" style="border-radius: 50%;"><br/>**[PolinaSvet](https://github.com/PolinaSvet)** | **1** | **1** pkg | 🌱 Package Beginner | **gin**: 1 |
+| 7 | <img src="https://github.com/kelvin-yong.png" width="24" height="24" style="border-radius: 50%;"><br/>**[kelvin-yong](https://github.com/kelvin-yong)** | **1** | **1** pkg | 🌱 Package Beginner | **gin**: 1 |
 
 <div align="center">
 
@@ -136,6 +146,12 @@ Master Go packages through hands-on challenges! Each package offers a structured
 | 🥈 | **[ashwinipatankar](https://github.com/ashwinipatankar)** | 3/4 | 🟩🟩🟩🟩🟩🟩🟩⬜⬜⬜ 75% |
 | 🥉 | **[RezaSi](https://github.com/RezaSi)** | 1/4 | 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ 25% |
 
+#### Echo Package
+
+| Rank | Developer | Completed | Progress |
+|:---:|:---:|:---:|:---|
+| 🥇 | **[RezaSi](https://github.com/RezaSi)** | 1/4 | 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ 25% |
+
 #### Fiber Package
 
 | Rank | Developer | Completed | Progress |
@@ -150,7 +166,8 @@ Master Go packages through hands-on challenges! Each package offers a structured
 | 🥇 | **[odelbos](https://github.com/odelbos)** | 4/4 | 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩 100% |
 | 🥈 | **[GleeN987](https://github.com/GleeN987)** | 1/4 | 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ 25% |
 | 🥉 | **[MarioPaez](https://github.com/MarioPaez)** | 1/4 | 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ 25% |
-| 4 | **[RezaSi](https://github.com/RezaSi)** | 1/4 | 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ 25% |
+| 4 | **[PolinaSvet](https://github.com/PolinaSvet)** | 1/4 | 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ 25% |
+| 5 | **[RezaSi](https://github.com/RezaSi)** | 1/4 | 🟩🟩⬜⬜⬜⬜⬜⬜⬜⬜ 25% |
 
 #### Gorm Package
 
@@ -161,9 +178,9 @@ Master Go packages through hands-on challenges! Each package offers a structured
 
 ### 📊 Package Challenge Statistics
 
-- **Total Package Challenges Available**: 17
-- **Active Package Learners**: 5
-- **Available Packages**: 4 (cobra, fiber, gin, gorm)
+- **Total Package Challenges Available**: 21
+- **Active Package Learners**: 7
+- **Available Packages**: 5 (cobra, echo, fiber, gin, gorm)
 
 - **Most Package Challenges Solved**: 17 by odelbos
 
@@ -278,7 +295,27 @@ Want to get started instantly without setting up anything locally? Use GitHub Co
 - All dependencies pre-installed
 - Works on any device with a browser
 
-### Option 3: Command Line
+### Option 3: Railway Deployment (One-Click Cloud Hosting)
+
+Deploy your own instance of the platform to the cloud with Railway!
+
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/go-interview-practice?referralCode=F6emx6&utm_medium=integration&utm_source=template&utm_campaign=generic)
+
+**Perfect for:**
+- **Teams & Organizations**: Private instance for internal use
+- **Educators**: Custom environment for students
+- **Customization**: Fork and modify for specific needs
+- **Always Available**: 24/7 cloud hosting with automatic scaling
+
+**Setup Steps:**
+1. **Click Deploy Button** above
+2. **Configure AI Features** (optional but recommended):
+   - Choose AI provider: `gemini` (recommended - free tier)
+   - Add API key: [Get free Gemini key](https://makersuite.google.com/app/apikey)
+3. **Access Your Platform**: Railway provides instant public URL
+4. **Start Using**: Full platform with all challenges immediately available
+
+### Option 4: Command Line
 
 ```bash
 # 1. Fork the repository first (see step 1 above)
